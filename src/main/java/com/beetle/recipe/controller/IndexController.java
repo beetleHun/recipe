@@ -1,4 +1,4 @@
-package com.beetle.recipes.controller;
+package com.beetle.recipe.controller;
 
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
