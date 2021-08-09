@@ -9,10 +9,10 @@
         <relativePath/> <!-- lookup parent from repository -->
     </parent>
     <groupId>com.beetle</groupId>
-    <artifactId>recipes</artifactId>
+    <artifactId>recipe</artifactId>
     <version>0.0.1-SNAPSHOT</version>
-    <name>recipes</name>
-    <description>Spring Boot project for recipes application</description>
+    <name>recipe</name>
+    <description>Spring Boot project for storing recipes</description>
     <properties>
         <java.version>11</java.version>
     </properties>
