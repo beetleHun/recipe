@@ -18,8 +18,8 @@ public class Category {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(name = "name")
-    private String name;
+    @Column(name = "description")
+    private String description;
 
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "category")
     private Set<Recipe> recipes;
@@ -28,12 +28,12 @@ public class Category {
         return id;
     }
 
-    public String getName() {
-        return name;
+    public String getDescription() {
+        return description;
     }
 
-    public Category setName(String name) {
-        this.name = name;
+    public Category setDescription(String description) {
+        this.description = description;
         return this;
     }
 

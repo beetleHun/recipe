@@ -15,19 +15,19 @@ public class UnitOfMeasure {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(name = "unit")
-    private String unit;
+    @Column(name = "measure")
+    private String measure;
 
     public Long getId() {
         return id;
     }
 
-    public String getUnit() {
-        return unit;
+    public String getMeasure() {
+        return measure;
     }
 
-    public UnitOfMeasure setUnit(String unit) {
-        this.unit = unit;
+    public UnitOfMeasure setMeasure(String measure) {
+        this.measure = measure;
         return this;
     }
 
