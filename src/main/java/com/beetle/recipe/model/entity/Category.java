@@ -1,18 +1,20 @@
 package com.beetle.recipe.model.entity;
 
 import lombok.Data;
+import lombok.EqualsAndHashCode;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.OneToMany;
+import javax.persistence.ManyToMany;
 import javax.persistence.Table;
+import java.util.HashSet;
 import java.util.Set;
 
 @Data
+@EqualsAndHashCode(exclude = {"recipes"})
 @Entity
 @Table(name = "category")
 public class Category {
@@ -24,7 +26,7 @@ public class Category {
     @Column(name = "description")
     private String description;
 
-    @OneToMany(fetch = FetchType.LAZY, mappedBy = "category")
-    private Set<Recipe> recipes;
+    @ManyToMany(mappedBy = "categories")
+    private Set<Recipe> recipes = new HashSet<>();
 
 }

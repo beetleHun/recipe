@@ -8,7 +8,6 @@ import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
-import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -16,9 +15,10 @@ import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
 import javax.persistence.Lob;
 import javax.persistence.ManyToMany;
-import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
+import java.util.HashSet;
 import java.util.Set;
 
 @Data
@@ -62,19 +62,28 @@ public class Recipe {
     @Column(name = "image")
     private byte[] image;
 
-    @ManyToMany
-    @JoinTable(name = "recipe_ingredient",
-            joinColumns = @JoinColumn(name = "recipe_id"),
-            inverseJoinColumns = @JoinColumn(name = "ingredient_id"))
-    // Originally the spring-recipe-project suggests one-to-many relation, but it makes more sense to me to use it
-    // as many-to-many. Multiple recipes can have the same subset of ingredients, and those can be necessary
-    // to other recipes as well.
-    // @OneToMany(cascade = CascadeType.ALL, mappedBy = "recipe")
-    private Set<Ingredient> ingredients;
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "recipe")
+    private Set<Ingredient> ingredients = new HashSet<>();
 
-    // Originally the spring-recipe suggests many-to-many relationship, but it does not makes sanes to me,
-    // how could a recipe have multiple categories? How can it be soup and dessert as well
-    @ManyToOne(fetch = FetchType.EAGER)
-    private Category category;
+    @ManyToMany
+    @JoinTable(name = "recipe_category",
+            joinColumns = @JoinColumn(name = "recipe_id"),
+            inverseJoinColumns = @JoinColumn(name = "category_id"))
+    private Set<Category> categories = new HashSet<>();
+
+    public void setNote(Note note) {
+        note.setRecipe(this);
+        this.note = note;
+    }
+
+    public void addCategory(Category category) {
+        category.getRecipes().add(this);
+        this.categories.add(category);
+    }
+
+    public void addIngredient(Ingredient ingredient) {
+        ingredient.setRecipe(this);
+        this.ingredients.add(ingredient);
+    }
 
 }

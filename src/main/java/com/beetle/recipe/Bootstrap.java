@@ -9,6 +9,8 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.stereotype.Component;
 
+import javax.transaction.Transactional;
+
 @Slf4j
 @Component
 public class Bootstrap implements CommandLineRunner {
@@ -23,12 +25,13 @@ public class Bootstrap implements CommandLineRunner {
         this.unitOfMeasureRepository = unitOfMeasureRepository;
     }
 
+    @Transactional
     @Override
     public void run(String... args) throws Exception {
         log.debug("Creating guacamole");
         Recipe guacamole = new Recipe();
         guacamole.setDescription("The best guacamole keeps it simple: just ripe avocados, salt, a squeeze of lime, onions, chilis, cilantro, and some chopped tomato. Serve it as a dip at your next party or spoon it on top of tacos for an easy dinner upgrade.");
-        guacamole.setCategory(categoryRepository.findByDescription("Mexican").orElseThrow());
+        guacamole.addCategory(categoryRepository.findByDescription("Mexican").orElseThrow());
         guacamole.setDifficulty(Difficulty.PADAWAN);
         guacamole.setPrepTime(10);
         guacamole.setCookTime(0);
@@ -40,7 +43,7 @@ public class Bootstrap implements CommandLineRunner {
         log.debug("Creating grilledChickenTaco");
         Recipe grilledChickenTaco = new Recipe();
         grilledChickenTaco.setDescription("Spicy grilled chicken tacos! Quick marinade, then grill. Ready in about 30 minutes. Great for a quick weeknight dinner, backyard cookouts, and tailgate parties.");
-        grilledChickenTaco.setCategory(categoryRepository.findByDescription("Mexican").orElseThrow());
+        grilledChickenTaco.addCategory(categoryRepository.findByDescription("Mexican").orElseThrow());
         grilledChickenTaco.setDifficulty(Difficulty.JEDI);
         grilledChickenTaco.setPrepTime(20);
         grilledChickenTaco.setCookTime(15);
