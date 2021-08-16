@@ -1,5 +1,7 @@
 package com.beetle.recipe.model.entity;
 
+import lombok.Data;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
@@ -11,6 +13,7 @@ import javax.persistence.OneToOne;
 import java.math.BigDecimal;
 import java.util.Set;
 
+@Data
 @Entity
 public class Ingredient {
 
@@ -37,36 +40,5 @@ public class Ingredient {
     @OneToOne(fetch = FetchType.EAGER)
     // @JoinColumn(name = "unit_id")
     private UnitOfMeasure unitOfMeasure;
-
-    public Long getId() {
-        return id;
-    }
-
-    public String getDescription() {
-        return description;
-    }
-
-    public Ingredient setDescription(String description) {
-        this.description = description;
-        return this;
-    }
-
-    public BigDecimal getAmount() {
-        return amount;
-    }
-
-    public Ingredient setAmount(BigDecimal amount) {
-        this.amount = amount;
-        return this;
-    }
-
-    public Set<Recipe> getRecipes() {
-        return recipes;
-    }
-
-    public Ingredient setRecipes(Set<Recipe> recipes) {
-        this.recipes = recipes;
-        return this;
-    }
 
 }

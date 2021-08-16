@@ -1,6 +1,7 @@
 package com.beetle.recipe.model.entity;
 
 import com.beetle.recipe.model.enums.Difficulty;
+import lombok.Data;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
@@ -20,6 +21,7 @@ import javax.persistence.OneToOne;
 import javax.persistence.Table;
 import java.util.Set;
 
+@Data
 @Entity
 @Table(name = "recipe")
 public class Recipe {
@@ -74,117 +76,5 @@ public class Recipe {
     // how could a recipe have multiple categories? How can it be soup and dessert as well
     @ManyToOne(fetch = FetchType.EAGER)
     private Category category;
-
-    public Long getId() {
-        return id;
-    }
-
-    public String getDescription() {
-        return description;
-    }
-
-    public Recipe setDescription(String description) {
-        this.description = description;
-        return this;
-    }
-
-    public Integer getPrepTime() {
-        return prepTime;
-    }
-
-    public Recipe setPrepTime(Integer prepTime) {
-        this.prepTime = prepTime;
-        return this;
-    }
-
-    public Integer getCookTime() {
-        return cookTime;
-    }
-
-    public Recipe setCookTime(Integer cookTime) {
-        this.cookTime = cookTime;
-        return this;
-    }
-
-    public Integer getServings() {
-        return servings;
-    }
-
-    public Recipe setServings(Integer servings) {
-        this.servings = servings;
-        return this;
-    }
-
-    public String getSource() {
-        return source;
-    }
-
-    public Recipe setSource(String source) {
-        this.source = source;
-        return this;
-    }
-
-    public String getUrl() {
-        return url;
-    }
-
-    public Recipe setUrl(String url) {
-        this.url = url;
-        return this;
-    }
-
-    public String getDirections() {
-        return directions;
-    }
-
-    public Recipe setDirections(String directions) {
-        this.directions = directions;
-        return this;
-    }
-
-    public Note getNote() {
-        return note;
-    }
-
-    public Recipe setNote(Note note) {
-        this.note = note;
-        return this;
-    }
-
-    public Difficulty getDifficulty() {
-        return difficulty;
-    }
-
-    public Recipe setDifficulty(Difficulty difficulty) {
-        this.difficulty = difficulty;
-        return this;
-    }
-
-    public byte[] getImage() {
-        return image;
-    }
-
-    public Recipe setImage(byte[] image) {
-        this.image = image;
-        return this;
-    }
-
-    public Set<Ingredient> getIngredients() {
-        return ingredients;
-    }
-
-    public Recipe setIngredients(Set<Ingredient> ingredients) {
-        this.ingredients = ingredients;
-        return this;
-    }
-
-    public Category getCategory() {
-        return category;
-    }
-
-    public Recipe setCategory(Category category) {
-        this.category = category;
-        return this;
-    }
 
 }

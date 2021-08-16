@@ -2,11 +2,13 @@ package com.beetle.recipe.service;
 
 import com.beetle.recipe.model.entity.Recipe;
 import com.beetle.recipe.repository.RecipeRepository;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
 
+@Slf4j
 @Service
 public class RecipeServiceImpl implements RecipeService {
 
