@@ -1,5 +1,7 @@
 package com.beetle.recipe.model.entity;
 
+import lombok.Data;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -7,6 +9,7 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Table;
 
+@Data
 @Entity
 @Table(name = "unit_of_measure")
 public class UnitOfMeasure {
@@ -17,18 +20,5 @@ public class UnitOfMeasure {
 
     @Column(name = "measure")
     private String measure;
-
-    public Long getId() {
-        return id;
-    }
-
-    public String getMeasure() {
-        return measure;
-    }
-
-    public UnitOfMeasure setMeasure(String measure) {
-        this.measure = measure;
-        return this;
-    }
 
 }

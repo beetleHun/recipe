@@ -4,10 +4,12 @@ import com.beetle.recipe.model.entity.Category;
 import com.beetle.recipe.model.entity.UnitOfMeasure;
 import com.beetle.recipe.repository.CategoryRepository;
 import com.beetle.recipe.repository.UnitOfMeasureRepository;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
+@Slf4j
 @Controller
 @RequestMapping("/index")
 public class IndexController {
@@ -22,6 +24,7 @@ public class IndexController {
 
     @GetMapping({"", "/"})
     public String getIndexPage() {
+        log.debug("Getting categories");
         Category category = categoryRepository.findByDescription("Italian").orElse(null);
         UnitOfMeasure unitOfMeasure = unitOfMeasureRepository.findByMeasure("Teaspoon").orElse(null);
 
