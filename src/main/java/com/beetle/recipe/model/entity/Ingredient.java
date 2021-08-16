@@ -1,6 +1,7 @@
 package com.beetle.recipe.model.entity;
 
 import lombok.Data;
+import lombok.EqualsAndHashCode;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -8,12 +9,12 @@ import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.ManyToMany;
+import javax.persistence.ManyToOne;
 import javax.persistence.OneToOne;
 import java.math.BigDecimal;
-import java.util.Set;
 
 @Data
+@EqualsAndHashCode(exclude = {"recipe"})
 @Entity
 public class Ingredient {
 
@@ -27,18 +28,10 @@ public class Ingredient {
     @Column(name = "amount")
     private BigDecimal amount;
 
-    @ManyToMany(mappedBy = "ingredients")
-    // It is not necessary to define the same join table on this side of the relation.
-    // If the mappedBy property is set, Hibernate will make the relation automatically.
-//    @JoinTable(
-//            name = "recipe_ingredient",
-//            joinColumns = @JoinColumn(name = "ingredient_id"),
-//            inverseJoinColumns = @JoinColumn(name = "recipe_id")
-//    )
-    private Set<Recipe> recipes;
+    @ManyToOne
+    private Recipe recipe;
 
     @OneToOne(fetch = FetchType.EAGER)
-    // @JoinColumn(name = "unit_id")
     private UnitOfMeasure unitOfMeasure;
 
 }
