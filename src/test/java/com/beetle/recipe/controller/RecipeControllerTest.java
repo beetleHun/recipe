@@ -70,15 +70,24 @@ class RecipeControllerTest {
     }
 
     @Test
-    void testMockMVC() {
+    void testMockMVC() throws Exception {
         MockMvc mockMvc = standaloneSetup(controller).build();
 
-        try {
-            mockMvc.perform(get("/recipes"))
-                    .andExpect(status().isOk())
-                    .andExpect(view().name("recipes/index"));
-        } catch (Exception ignore) {
-        }
+        mockMvc.perform(get("/recipes"))
+                .andExpect(status().isOk())
+                .andExpect(view().name("recipes/index"));
+    }
+
+    @Test
+    void getRecipe() throws Exception {
+        final Long id = 1L;
+        MockMvc mockMvc = standaloneSetup(controller).build();
+
+        mockMvc.perform(get("/recipes/" + id))
+                .andExpect(status().isOk())
+                .andExpect(view().name("recipes/details"));
+
+        verify(recipeService).getById(eq(id));
     }
 
 }

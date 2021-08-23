@@ -36,15 +36,18 @@
               <tr>
                 <th>ID</th>
                 <th>Description</th>
+                <th>Details</th>
               </tr>
               </thead>
               <tr th:remove="all">
                 <td>1</td>
                 <td>A recipe</td>
+                <td><span href="#" class="icon-next"></span></td>
               </tr>
               <tr th:each="recipe : ${recipes}">
                 <td th:text="${recipe.id}"></td>
                 <td th:text="${recipe.description}"></td>
+                <td><a class="glyphicon-search" href="#" th:href="@{'/recipes/' + ${recipe.id}}"></a></td>
               </tr>
             </table>
           </div>
