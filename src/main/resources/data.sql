@@ -21,3 +21,5 @@ INSERT INTO unit_of_measure (measure)
 VALUES ('Pint');
 INSERT INTO unit_of_measure (measure)
 VALUES ('Clove');
+INSERT INTO unit_of_measure (measure)
+VALUES ('Ripe');

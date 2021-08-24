@@ -2,6 +2,7 @@ package com.beetle.recipe.model.entity;
 
 import lombok.Data;
 import lombok.EqualsAndHashCode;
+import lombok.ToString;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -14,6 +15,7 @@ import javax.persistence.Table;
 
 @Data
 @EqualsAndHashCode(exclude = {"recipe"})
+@ToString(exclude = {"recipe"})
 @Entity
 @Table(name = "note")
 public class Note {

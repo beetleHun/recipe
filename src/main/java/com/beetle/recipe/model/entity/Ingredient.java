@@ -1,7 +1,8 @@
 package com.beetle.recipe.model.entity;
 
-import lombok.Data;
 import lombok.EqualsAndHashCode;
+import lombok.Getter;
+import lombok.Setter;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -12,8 +13,10 @@ import javax.persistence.Id;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToOne;
 import java.math.BigDecimal;
+import java.math.RoundingMode;
 
-@Data
+@Getter
+@Setter
 @EqualsAndHashCode(exclude = {"recipe"})
 @Entity
 public class Ingredient {
@@ -33,5 +36,10 @@ public class Ingredient {
 
     @OneToOne(fetch = FetchType.EAGER)
     private UnitOfMeasure unitOfMeasure;
+
+    @Override
+    public String toString() {
+        return amount.setScale(2, RoundingMode.HALF_UP).stripTrailingZeros() + " " + unitOfMeasure.getMeasure().toLowerCase() + " of " + description;
+    }
 
 }
