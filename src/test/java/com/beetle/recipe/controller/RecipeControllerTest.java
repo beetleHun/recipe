@@ -20,6 +20,7 @@ import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.model;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.view;
 import static org.springframework.test.web.servlet.setup.MockMvcBuilders.standaloneSetup;
@@ -70,7 +71,7 @@ class RecipeControllerTest {
     }
 
     @Test
-    void testMockMVC() throws Exception {
+    void getRecipes_testWithMockMVC() throws Exception {
         MockMvc mockMvc = standaloneSetup(controller).build();
 
         mockMvc.perform(get("/recipes"))
@@ -79,13 +80,29 @@ class RecipeControllerTest {
     }
 
     @Test
-    void getRecipe() throws Exception {
+    void getRecipe_WhenDoesNotExist_ThenModelDoesNotContainAny() throws Exception {
         final Long id = 1L;
         MockMvc mockMvc = standaloneSetup(controller).build();
 
         mockMvc.perform(get("/recipes/" + id))
                 .andExpect(status().isOk())
-                .andExpect(view().name("recipes/details"));
+                .andExpect(view().name("recipes/details"))
+                .andExpect(model().attributeDoesNotExist("recipe"));
+
+        verify(recipeService).getById(eq(id));
+    }
+
+    @Test
+    void getRecipe_WhenHappyPath() throws Exception {
+        final Long id = 1L;
+        MockMvc mockMvc = standaloneSetup(controller).build();
+
+        when(recipeService.getById(eq(id))).thenReturn(new Recipe());
+
+        mockMvc.perform(get("/recipes/" + id))
+                .andExpect(status().isOk())
+                .andExpect(view().name("recipes/details"))
+                .andExpect(model().attributeExists("recipe"));
 
         verify(recipeService).getById(eq(id));
     }

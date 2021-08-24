@@ -47,7 +47,7 @@
               <tr th:each="recipe : ${recipes}">
                 <td th:text="${recipe.id}"></td>
                 <td th:text="${recipe.description}"></td>
-                <td><a class="glyphicon-search" href="#" th:href="@{'/recipes/' + ${recipe.id}}"></a></td>
+                <td><a href="#" th:href="@{'/recipes/' + ${recipe.id}}">View</a></td>
               </tr>
             </table>
           </div>

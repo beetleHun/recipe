@@ -48,6 +48,7 @@ public class Recipe {
     @Column(name = "url")
     private String url;
 
+    @Lob
     @Column(name = "directions")
     private String directions;
 
