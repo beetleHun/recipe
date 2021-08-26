@@ -73,8 +73,10 @@ public class Recipe {
     private Set<Category> categories = new HashSet<>();
 
     public void setNote(Note note) {
-        note.setRecipe(this);
-        this.note = note;
+        if (note != null) {
+            note.setRecipe(this);
+            this.note = note;
+        }
     }
 
     public void addCategory(Category category) {
