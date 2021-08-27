@@ -123,6 +123,22 @@ class RecipeControllerTest {
     }
 
     @Test
+    void getExisting() throws Exception {
+        MockMvc mockMvc = standaloneSetup(controller).build();
+        RecipeCommand recipeCommand = new RecipeCommand();
+        recipeCommand.setId(1L);
+
+        when(recipeService.getCommandById(eq(1L))).thenReturn(recipeCommand);
+
+        mockMvc.perform(get("/recipes/" + recipeCommand.getId() + "/edit"))
+                .andExpect(status().isOk())
+                .andExpect(view().name("recipes/edit"))
+                .andExpect(model().attributeExists("recipe"));
+
+        verify(recipeService).getCommandById(eq(1L));
+    }
+
+    @Test
     void save() throws Exception {
         MockMvc mockMvc = standaloneSetup(controller).build();
         RecipeCommand recipeCommand = new RecipeCommand();

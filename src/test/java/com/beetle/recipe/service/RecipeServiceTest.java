@@ -66,6 +66,17 @@ class RecipeServiceTest {
     }
 
     @Test
+    void getCommandById_WhenHappyPath() {
+        Recipe recipe = new Recipe();
+        recipe.setId(1L);
+        when(recipeRepository.findById(eq(1L))).thenReturn(Optional.of(recipe));
+
+        service.getCommandById(1L);
+
+        verify(recipeToRecipeCommand).convert(recipe);
+    }
+
+    @Test
     void save_WhenCalled_ThenRecipeCommandToRecipeIsCalled() {
         RecipeCommand recipeCommand = new RecipeCommand();
         service.save(recipeCommand);
