@@ -37,7 +37,7 @@ public class NoteCommandToNoteTest {
         //given
         NoteCommand noteCommand = new NoteCommand();
         noteCommand.setId(ID_VALUE);
-        noteCommand.setRecipeNotes(RECIPE_NOTES);
+        noteCommand.setNote(RECIPE_NOTES);
 
         //when
         Note note = converter.convert(noteCommand);

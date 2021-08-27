@@ -1,12 +1,15 @@
 package com.beetle.recipe.controller;
 
+import com.beetle.recipe.commands.RecipeCommand;
 import com.beetle.recipe.model.entity.Recipe;
 import com.beetle.recipe.service.RecipeService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 import java.util.List;
@@ -23,7 +26,7 @@ public class RecipeController {
     }
 
     @GetMapping({"", "/", "/index"})
-    public String getRecipes(Model model) {
+    public String list(Model model) {
         log.debug("Getting recipes");
         List<Recipe> recipes = recipeService.listRecipes();
         model.addAttribute("recipes", recipes);
@@ -32,12 +35,26 @@ public class RecipeController {
     }
 
     @GetMapping("/{id}")
-    public String getRecipe(@PathVariable(name = "id") Long id, Model model) {
+    public String get(@PathVariable(name = "id") Long id, Model model) {
         log.debug("Getting recipe by id '{}'", id);
         Recipe recipe = recipeService.getById(id);
         model.addAttribute("recipe", recipe);
 
         return "recipes/details";
+    }
+
+    @GetMapping("/new")
+    public String getNew(Model model) {
+        model.addAttribute("recipe", new RecipeCommand());
+
+        return "recipes/edit";
+    }
+
+    @PostMapping
+    public String save(@ModelAttribute RecipeCommand recipeCommand) {
+        RecipeCommand saved = recipeService.save(recipeCommand);
+
+        return "redirect:/recipes/" + saved.getId();
     }
 
 }
