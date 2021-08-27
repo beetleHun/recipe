@@ -65,4 +65,11 @@ public class RecipeController {
         return "redirect:/recipes/" + saved.getId();
     }
 
+    @PostMapping("/{id}/delete")
+    public String delete(@PathVariable Long id) {
+        recipeService.delete(id);
+
+        return "redirect:/recipes/";
+    }
+
 }

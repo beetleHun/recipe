@@ -151,4 +151,13 @@ class RecipeControllerTest {
                 .andExpect(redirectedUrl("/recipes/" + recipeCommand.getId()));
     }
 
+    @Test
+    void delete() throws Exception {
+        MockMvc mockMvc = standaloneSetup(controller).build();
+
+        mockMvc.perform(post("/recipes/" + 1 + "/delete"))
+                .andExpect(view().name("redirect:/recipes/"))
+                .andExpect(redirectedUrl("/recipes/"));
+    }
+
 }

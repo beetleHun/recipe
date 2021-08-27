@@ -111,4 +111,11 @@ class RecipeServiceTest {
         verify(recipeToRecipeCommand).convert(eq(saved));
     }
 
+    @Test
+    void delete_WhenHappyPath() {
+        service.delete(1L);
+
+        verify(recipeRepository).deleteById(eq(1L));
+    }
+
 }
