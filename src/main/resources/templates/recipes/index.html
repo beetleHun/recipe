@@ -38,6 +38,7 @@
                 <th>Description</th>
                 <th>Details</th>
                 <th>Edit</th>
+                <th>Delete</th>
               </tr>
               </thead>
               <tr th:remove="all">
@@ -51,6 +52,11 @@
                 <td th:text="${recipe.description}"></td>
                 <td><a href="#" th:href="@{'/recipes/' + ${recipe.id}}">View</a></td>
                 <td><a href="#" th:href="@{'/recipes/' + ${recipe.id} + '/edit'}">Open</a></td>
+                <td>
+                  <form href="#" th:action="@{/recipes/{id}/delete(id=${recipe.id})}" th:method="post">
+                    <button type="submit">X</button>
+                  </form>
+                </td>
               </tr>
             </table>
           </div>

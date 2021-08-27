@@ -15,4 +15,6 @@ public interface RecipeService {
 
     RecipeCommand save(RecipeCommand recipeCommand);
 
+    void delete(Long id);
+
 }
