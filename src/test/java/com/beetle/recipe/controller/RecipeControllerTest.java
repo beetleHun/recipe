@@ -1,5 +1,6 @@
 package com.beetle.recipe.controller;
 
+import com.beetle.recipe.commands.RecipeCommand;
 import com.beetle.recipe.model.entity.Recipe;
 import com.beetle.recipe.service.RecipeService;
 import org.junit.jupiter.api.Test;
@@ -15,12 +16,15 @@ import java.util.Collections;
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.model;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.redirectedUrl;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.view;
 import static org.springframework.test.web.servlet.setup.MockMvcBuilders.standaloneSetup;
@@ -45,7 +49,7 @@ class RecipeControllerTest {
 
         when(recipeService.listRecipes()).thenReturn(recipes);
 
-        String index = controller.getRecipes(model);
+        String index = controller.list(model);
 
         verify(recipeService, times(1)).listRecipes();
         verify(model, times(1)).addAttribute(eq("recipes"), eq(recipes));
@@ -61,7 +65,7 @@ class RecipeControllerTest {
         when(recipeService.listRecipes()).thenReturn(recipes);
         ArgumentCaptor<List> argumentCaptor = ArgumentCaptor.forClass(List.class);
 
-        String index = controller.getRecipes(model);
+        String index = controller.list(model);
 
         verify(recipeService, times(1)).listRecipes();
         verify(model, times(1)).addAttribute(eq("recipes"), argumentCaptor.capture());
@@ -105,6 +109,30 @@ class RecipeControllerTest {
                 .andExpect(model().attributeExists("recipe"));
 
         verify(recipeService).getById(eq(id));
+    }
+
+
+    @Test
+    void getNew_WhenHappyPath() throws Exception {
+        MockMvc mockMvc = standaloneSetup(controller).build();
+
+        mockMvc.perform(get("/recipes/new"))
+                .andExpect(status().isOk())
+                .andExpect(view().name("recipes/edit"))
+                .andExpect(model().attributeExists("recipe"));
+    }
+
+    @Test
+    void save() throws Exception {
+        MockMvc mockMvc = standaloneSetup(controller).build();
+        RecipeCommand recipeCommand = new RecipeCommand();
+        recipeCommand.setId(1L);
+
+        when(recipeService.save(any(RecipeCommand.class))).thenReturn(recipeCommand);
+
+        mockMvc.perform(post("/recipes"))
+                .andExpect(view().name("redirect:/recipes/" + recipeCommand.getId()))
+                .andExpect(redirectedUrl("/recipes/" + recipeCommand.getId()));
     }
 
 }
