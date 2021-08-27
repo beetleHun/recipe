@@ -37,17 +37,20 @@
                 <th>ID</th>
                 <th>Description</th>
                 <th>Details</th>
+                <th>Edit</th>
               </tr>
               </thead>
               <tr th:remove="all">
                 <td>1</td>
                 <td>A recipe</td>
                 <td><span href="#" class="icon-next"></span></td>
+                <td><span href="#" class="icon-next"></span></td>
               </tr>
               <tr th:each="recipe : ${recipes}">
                 <td th:text="${recipe.id}"></td>
                 <td th:text="${recipe.description}"></td>
                 <td><a href="#" th:href="@{'/recipes/' + ${recipe.id}}">View</a></td>
+                <td><a href="#" th:href="@{'/recipes/' + ${recipe.id} + '/edit'}">Open</a></td>
               </tr>
             </table>
           </div>

@@ -50,6 +50,14 @@ public class RecipeController {
         return "recipes/edit";
     }
 
+    @GetMapping("/{id}/edit")
+    public String getExisting(@PathVariable Long id, Model model) {
+        RecipeCommand recipeCommand = recipeService.getCommandById(id);
+        model.addAttribute("recipe", recipeCommand);
+
+        return "recipes/edit";
+    }
+
     @PostMapping
     public String save(@ModelAttribute RecipeCommand recipeCommand) {
         RecipeCommand saved = recipeService.save(recipeCommand);
