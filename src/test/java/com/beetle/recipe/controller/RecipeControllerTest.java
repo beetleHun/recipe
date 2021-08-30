@@ -1,5 +1,6 @@
 package com.beetle.recipe.controller;
 
+import com.beetle.recipe.commands.IngredientCommand;
 import com.beetle.recipe.commands.RecipeCommand;
 import com.beetle.recipe.model.entity.Recipe;
 import com.beetle.recipe.service.RecipeService;
@@ -53,7 +54,7 @@ class RecipeControllerTest {
 
         verify(recipeService, times(1)).listRecipes();
         verify(model, times(1)).addAttribute(eq("recipes"), eq(recipes));
-        assertEquals("recipes/index", index);
+        assertEquals("recipes/list", index);
     }
 
     @Test
@@ -69,7 +70,7 @@ class RecipeControllerTest {
 
         verify(recipeService, times(1)).listRecipes();
         verify(model, times(1)).addAttribute(eq("recipes"), argumentCaptor.capture());
-        assertEquals("recipes/index", index);
+        assertEquals("recipes/list", index);
         assertEquals(1, argumentCaptor.getValue().size());
         assertEquals(recipes, argumentCaptor.getValue());
     }
@@ -80,7 +81,7 @@ class RecipeControllerTest {
 
         mockMvc.perform(get("/recipes"))
                 .andExpect(status().isOk())
-                .andExpect(view().name("recipes/index"));
+                .andExpect(view().name("recipes/list"));
     }
 
     @Test
@@ -158,6 +159,40 @@ class RecipeControllerTest {
         mockMvc.perform(post("/recipes/" + 1 + "/delete"))
                 .andExpect(view().name("redirect:/recipes/"))
                 .andExpect(redirectedUrl("/recipes/"));
+    }
+
+    @Test
+    void listIngredients_WhenDoesNotExist_ThenModelDoesNotContainAny() throws Exception {
+        final Long id = 1L;
+        MockMvc mockMvc = standaloneSetup(controller).build();
+
+        when(recipeService.getCommandById(eq(id))).thenReturn(new RecipeCommand());
+
+        mockMvc.perform(get("/recipes/" + id + "/ingredients"))
+                .andExpect(status().isOk())
+                .andExpect(view().name("ingredients/list"))
+                .andExpect(model().attributeDoesNotExist("ingredients"));
+
+        verify(recipeService).getCommandById(eq(id));
+    }
+
+    @Test
+    void listIngredients_WhenHappyPath() throws Exception {
+        final Long id = 1L;
+        RecipeCommand command = new RecipeCommand();
+        command.setId(id);
+        command.setIngredients(Collections.singleton(new IngredientCommand()));
+
+        MockMvc mockMvc = standaloneSetup(controller).build();
+
+        when(recipeService.getCommandById(eq(id))).thenReturn(command);
+
+        mockMvc.perform(get("/recipes/" + id + "/ingredients"))
+                .andExpect(status().isOk())
+                .andExpect(view().name("ingredients/list"))
+                .andExpect(model().attributeExists("ingredients"));
+
+        verify(recipeService).getCommandById(eq(id));
     }
 
 }
