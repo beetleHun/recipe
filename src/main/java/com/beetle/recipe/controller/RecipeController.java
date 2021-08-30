@@ -73,8 +73,12 @@ public class RecipeController {
     }
 
     @GetMapping("/{id}/ingredients")
-    public String list(@PathVariable(value = "id") Long id, Model model) {
-        model.addAttribute("ingredients", recipeService.getCommandById(id).getIngredients());
+    public String listIngredients(@PathVariable(value = "id") Long id, Model model) {
+        RecipeCommand command = recipeService.getCommandById(id);
+
+        if (command != null && command.getIngredients() != null && !command.getIngredients().isEmpty()) {
+            model.addAttribute("ingredients", command.getIngredients());
+        }
 
         return "ingredients/list";
     }
