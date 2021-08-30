@@ -31,7 +31,7 @@ public class RecipeController {
         List<Recipe> recipes = recipeService.listRecipes();
         model.addAttribute("recipes", recipes);
 
-        return "recipes/index";
+        return "recipes/list";
     }
 
     @GetMapping("/{id}")
@@ -70,6 +70,13 @@ public class RecipeController {
         recipeService.delete(id);
 
         return "redirect:/recipes/";
+    }
+
+    @GetMapping("/{id}/ingredients")
+    public String list(@PathVariable(value = "id") Long id, Model model) {
+        model.addAttribute("ingredients", recipeService.getCommandById(id).getIngredients());
+
+        return "ingredients/list";
     }
 
 }

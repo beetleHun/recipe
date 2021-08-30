@@ -54,7 +54,7 @@
                 <td><a href="#" th:href="@{'/recipes/' + ${recipe.id} + '/edit'}">Open</a></td>
                 <td>
                   <form href="#" th:action="@{/recipes/{id}/delete(id=${recipe.id})}" th:method="post">
-                    <button type="submit">X</button>
+                    <button class="btn btn-danger" type="submit">X</button>
                   </form>
                 </td>
               </tr>
