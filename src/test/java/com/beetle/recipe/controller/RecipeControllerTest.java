@@ -140,28 +140,6 @@ class RecipeControllerTest {
     }
 
     @Test
-    void save() throws Exception {
-        MockMvc mockMvc = standaloneSetup(controller).build();
-        RecipeCommand recipeCommand = new RecipeCommand();
-        recipeCommand.setId(1L);
-
-        when(recipeService.save(any(RecipeCommand.class))).thenReturn(recipeCommand);
-
-        mockMvc.perform(post("/recipes"))
-                .andExpect(view().name("redirect:/recipes/" + recipeCommand.getId()))
-                .andExpect(redirectedUrl("/recipes/" + recipeCommand.getId()));
-    }
-
-    @Test
-    void delete() throws Exception {
-        MockMvc mockMvc = standaloneSetup(controller).build();
-
-        mockMvc.perform(post("/recipes/" + 1 + "/delete"))
-                .andExpect(view().name("redirect:/recipes/"))
-                .andExpect(redirectedUrl("/recipes/"));
-    }
-
-    @Test
     void listIngredients_WhenDoesNotExist_ThenModelDoesNotContainAny() throws Exception {
         final Long id = 1L;
         MockMvc mockMvc = standaloneSetup(controller).build();
@@ -193,6 +171,28 @@ class RecipeControllerTest {
                 .andExpect(model().attributeExists("ingredients"));
 
         verify(recipeService).getCommandById(eq(id));
+    }
+
+    @Test
+    void save() throws Exception {
+        MockMvc mockMvc = standaloneSetup(controller).build();
+        RecipeCommand recipeCommand = new RecipeCommand();
+        recipeCommand.setId(1L);
+
+        when(recipeService.save(any(RecipeCommand.class))).thenReturn(recipeCommand);
+
+        mockMvc.perform(post("/recipes"))
+                .andExpect(view().name("redirect:/recipes/" + recipeCommand.getId()))
+                .andExpect(redirectedUrl("/recipes/" + recipeCommand.getId()));
+    }
+
+    @Test
+    void delete() throws Exception {
+        MockMvc mockMvc = standaloneSetup(controller).build();
+
+        mockMvc.perform(post("/recipes/" + 1 + "/delete"))
+                .andExpect(view().name("redirect:/recipes/"))
+                .andExpect(redirectedUrl("/recipes/"));
     }
 
 }

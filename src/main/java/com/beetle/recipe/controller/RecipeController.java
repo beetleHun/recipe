@@ -58,6 +58,17 @@ public class RecipeController {
         return "recipes/edit";
     }
 
+    @GetMapping("/{id}/ingredients")
+    public String listIngredients(@PathVariable(value = "id") Long id, Model model) {
+        RecipeCommand command = recipeService.getCommandById(id);
+
+        if (command != null && command.getIngredients() != null && !command.getIngredients().isEmpty()) {
+            model.addAttribute("ingredients", command.getIngredients());
+        }
+
+        return "ingredients/list";
+    }
+
     @PostMapping
     public String save(@ModelAttribute RecipeCommand recipeCommand) {
         RecipeCommand saved = recipeService.save(recipeCommand);
@@ -70,17 +81,6 @@ public class RecipeController {
         recipeService.delete(id);
 
         return "redirect:/recipes/";
-    }
-
-    @GetMapping("/{id}/ingredients")
-    public String listIngredients(@PathVariable(value = "id") Long id, Model model) {
-        RecipeCommand command = recipeService.getCommandById(id);
-
-        if (command != null && command.getIngredients() != null && !command.getIngredients().isEmpty()) {
-            model.addAttribute("ingredients", command.getIngredients());
-        }
-
-        return "ingredients/list";
     }
 
 }

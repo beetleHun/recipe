@@ -1,5 +1,7 @@
 package com.beetle.recipe.service;
 
+import com.beetle.recipe.commands.IngredientCommand;
+import com.beetle.recipe.converters.IngredientCommandToIngredient;
 import com.beetle.recipe.converters.IngredientToIngredientCommand;
 import com.beetle.recipe.model.entity.Ingredient;
 import com.beetle.recipe.repository.IngredientRepository;
@@ -23,6 +25,9 @@ class IngredientServiceTest {
 
     @Mock
     private IngredientRepository ingredientRepository;
+
+    @Mock
+    private IngredientCommandToIngredient ingredientCommandToIngredient;
 
     @Mock
     private IngredientToIngredientCommand ingredientToIngredientCommand;
@@ -49,6 +54,41 @@ class IngredientServiceTest {
 
         verify(ingredientRepository).findById(eq(id));
         verify(ingredientToIngredientCommand).convert(eq(ingredient));
+    }
+
+    @Test
+    void save_WhenCalled_ThenRecipeCommandToRecipeIsCalled() {
+        IngredientCommand ingredientCommand = new IngredientCommand();
+        service.save(ingredientCommand);
+
+        verify(ingredientCommandToIngredient).convert(eq(ingredientCommand));
+    }
+
+    @Test
+    void save_WhenCalled_ThenRepositoryIsCalled() {
+        Ingredient ingredient = new Ingredient();
+        IngredientCommand ingredientCommand = new IngredientCommand();
+
+        when(ingredientCommandToIngredient.convert(eq(ingredientCommand))).thenReturn(ingredient);
+
+        service.save(ingredientCommand);
+
+        verify(ingredientRepository).save(eq(ingredient));
+    }
+
+    @Test
+    void save_WhenCalled_ThenRecipeToRecipeCommandIsCalled() {
+        Ingredient ingredient = new Ingredient();
+        Ingredient saved = new Ingredient();
+        saved.setId(1L);
+        IngredientCommand ingredientCommand = new IngredientCommand();
+
+        when(ingredientCommandToIngredient.convert(eq(ingredientCommand))).thenReturn(ingredient);
+        when(ingredientRepository.save(eq(ingredient))).thenReturn(saved);
+
+        service.save(ingredientCommand);
+
+        verify(ingredientToIngredientCommand).convert(eq(saved));
     }
 
 }
