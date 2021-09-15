@@ -13,6 +13,7 @@ import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.ui.Model;
 
+import java.math.BigDecimal;
 import java.util.Collections;
 import java.util.List;
 
@@ -157,9 +158,11 @@ class RecipeControllerTest {
     @Test
     void listIngredients_WhenHappyPath() throws Exception {
         final Long id = 1L;
+        IngredientCommand ingredientCommand = new IngredientCommand();
+        ingredientCommand.setAmount(BigDecimal.ONE);
         RecipeCommand command = new RecipeCommand();
         command.setId(id);
-        command.setIngredients(Collections.singleton(new IngredientCommand()));
+        command.setIngredients(Collections.singleton(ingredientCommand));
 
         MockMvc mockMvc = standaloneSetup(controller).build();
 

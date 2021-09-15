@@ -20,12 +20,17 @@ public class IngredientCommand {
     private BigDecimal amount;
     private UnitOfMeasureCommand unitOfMeasure;
 
-    public String getReadableAmount() {
-        BigDecimal readableAmount = amount.setScale(2, RoundingMode.HALF_UP).stripTrailingZeros();
+    public String toString() {
+        if (amount == null || unitOfMeasure == null) {
+            return "";
+        }
 
-        return readableAmount + " " + unitOfMeasure.getMeasure().toLowerCase() +
-                (readableAmount.compareTo(BigDecimal.ONE) > 0 ? "s" : "") +
-                " of " + description;
+        BigDecimal readableAmount = amount.setScale(2, RoundingMode.HALF_UP).stripTrailingZeros();
+        String measure = unitOfMeasure.getMeasure() == null
+                ? ""
+                : unitOfMeasure.getMeasure().toLowerCase() + (readableAmount.compareTo(BigDecimal.ONE) > 0 ? "s" : "");
+
+        return readableAmount.toPlainString() + " " + measure + " of " + description;
     }
 
 }

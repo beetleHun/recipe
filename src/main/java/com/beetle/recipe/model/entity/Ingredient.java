@@ -39,11 +39,16 @@ public class Ingredient {
 
     @Override
     public String toString() {
-        BigDecimal readableAmount = amount.setScale(2, RoundingMode.HALF_UP).stripTrailingZeros();
+        if (amount == null || unitOfMeasure == null) {
+            return "";
+        }
 
-        return readableAmount + " " + unitOfMeasure.getMeasure().toLowerCase() +
-                (readableAmount.compareTo(BigDecimal.ONE) > 0 ? "s" : "") +
-                " of " + description;
+        BigDecimal readableAmount = amount.setScale(2, RoundingMode.HALF_UP).stripTrailingZeros();
+        String measure = unitOfMeasure.getMeasure() == null
+                ? ""
+                : unitOfMeasure.getMeasure().toLowerCase() + (readableAmount.compareTo(BigDecimal.ONE) > 0 ? "s" : "");
+
+        return readableAmount.toPlainString() + " " + measure + " of " + description;
     }
 
 }
