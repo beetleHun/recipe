@@ -1,72 +1,79 @@
 <!DOCTYPE html>
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
-  <meta charset="UTF-8"/>
-  <title>Ingredients</title>
+    <meta charset="UTF-8"/>
+    <title>Ingredients</title>
 
-  <!-- Latest compiled and minified CSS -->
-  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css"
-        integrity="sha384-HSMxcRTRxnN+Bdg0JdbxYKrThecOKuH5zCYotlSAcp1+c8xmyTe9GYg1l9a69psu" crossorigin="anonymous"
-        th:href="@{/webjars/bootstrap/3.4.1/css/bootstrap.min.css}">
+    <!-- Latest compiled and minified CSS -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css"
+          integrity="sha384-HSMxcRTRxnN+Bdg0JdbxYKrThecOKuH5zCYotlSAcp1+c8xmyTe9GYg1l9a69psu" crossorigin="anonymous"
+          th:href="@{/webjars/bootstrap/3.4.1/css/bootstrap.min.css}">
 
-  <script src="webjars/jquery/3.6.0/jquery.min.js"></script>
+    <script src="webjars/jquery/3.6.0/jquery.min.js"></script>
 
-  <!-- Optional theme -->
-  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap-theme.min.css"
-        integrity="sha384-6pzBo3FDv/PJ8r2KRkGHifhEocL+1X2rVCTTkUfGk7/0pbek5mMa1upzvWbrUbOZ" crossorigin="anonymous">
+    <!-- Optional theme -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap-theme.min.css"
+          integrity="sha384-6pzBo3FDv/PJ8r2KRkGHifhEocL+1X2rVCTTkUfGk7/0pbek5mMa1upzvWbrUbOZ" crossorigin="anonymous">
 
-  <!-- Latest compiled and minified JavaScript -->
-  <script src="https://stackpath.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"
-          integrity="sha384-aJ21OjlMXNL5UyIl/XNwTMqvzeRMZH2w8c5cRVpzpU8Y5bApTppSuUkhZXN0VxHd" crossorigin="anonymous"></script>
+    <!-- Latest compiled and minified JavaScript -->
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"
+            integrity="sha384-aJ21OjlMXNL5UyIl/XNwTMqvzeRMZH2w8c5cRVpzpU8Y5bApTppSuUkhZXN0VxHd"
+            crossorigin="anonymous"></script>
 </head>
 <body>
 <div class="container-fluid" style="margin-top: 20px">
-  <div class="row">
-    <div class="col-md-6 col-md-offset-3">
-      <div class="panel panel-primary">
+    <div class="row">
+        <div class="col-md-6 col-md-offset-3">
+            <div class="panel panel-primary">
 
-        <div class="panel-heading">
-          <h1 class="panel-title">Ingredients</h1>
+                <div class="panel-heading" style="padding-bottom: 25px">
+                    <div class="pull-right" th:if="${not #lists.isEmpty(ingredients)}">
+                        <a class="btn btn-success"
+                           th:href="@{'/recipes/' + ${ingredients[0].getRecipeId()} + '/ingredient/new'}">New</a>
+                    </div>
+                    <h1 class="panel-title">Ingredients</h1>
+                </div>
+                <div class="panel-body">
+                    <div class="table-responsive" th:if="${not #lists.isEmpty(ingredients)}">
+                        <table class="table table-hover ">
+                            <thead class="thead-inverse">
+                            <tr>
+                                <th>ID</th>
+                                <th>Description</th>
+                                <th>View</th>
+                                <th>Update</th>
+                                <th>Delete</th>
+                            </tr>
+                            </thead>
+                            <tr th:remove="all">
+                                <td>123</td>
+                                <td>Tasty Goodnees 1</td>
+                                <td><a href="#">View</a></td>
+                                <td><a href="#">Update</a></td>
+                                <td><a href="#">Delete</a></td>
+                            </tr>
+                            <tr th:remove="all">
+                                <td>12333</td>
+                                <td>Tasty Goodnees 2</td>
+                                <td><a href="#">View</a></td>
+                                <td><a href="#">Update</a></td>
+                                <td><a href="#">Delete</a></td>
+                            </tr>
+                            <tr th:each="ingredient : ${ingredients}">
+                                <td th:text="${ingredient.id}"></td>
+                                <td th:text="${ingredient}"></td>
+                                <td><a href="#" th:href="@{'/ingredients/' + ${ingredient.id}}">View</a></td>
+                                <td><a href="#" th:href="@{'/ingredients/' + ${ingredient.id} + '/edit'}">Update</a>
+                                </td>
+                                <td><a href="#" th:href="@{'/ingredients/' + ${ingredient.id} + '/delete'}">Delete</a>
+                                </td>
+                            </tr>
+                        </table>
+                    </div>
+                </div>
+            </div>
         </div>
-        <div class="panel-body">
-          <div class="table-responsive" th:if="${not #lists.isEmpty(ingredients)}">
-            <table class="table table-hover ">
-              <thead class="thead-inverse">
-              <tr>
-                <th>ID</th>
-                <th>Description</th>
-                <th>View</th>
-                <th>Update</th>
-                <th>Delete</th>
-              </tr>
-              </thead>
-              <tr th:remove="all">
-                <td>123</td>
-                <td>Tasty Goodnees 1</td>
-                <td><a href="#">View</a></td>
-                <td><a href="#">Update</a></td>
-                <td><a href="#">Delete</a></td>
-              </tr>
-              <tr th:remove="all">
-                <td>12333</td>
-                <td>Tasty Goodnees 2</td>
-                <td><a href="#">View</a></td>
-                <td><a href="#">Update</a></td>
-                <td><a href="#">Delete</a></td>
-              </tr>
-              <tr th:each="ingredient : ${ingredients}">
-                <td th:text="${ingredient.id}"></td>
-                <td th:text="${ingredient.getReadableAmount()}"></td>
-                <td><a href="#" th:href="@{'/ingredients/' + ${ingredient.id}}">View</a></td>
-                <td><a href="#" th:href="@{'/ingredients/' + ${ingredient.id} + '/edit'}">Update</a></td>
-                <td><a href="#" th:href="@{'/ingredients/' + ${ingredient.id} + '/delete'}">Delete</a></td>
-              </tr>
-            </table>
-          </div>
-        </div>
-      </div>
     </div>
-  </div>
 </div>
 
 </body>
