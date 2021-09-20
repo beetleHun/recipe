@@ -64,8 +64,10 @@
                                 <td th:text="${ingredient}"></td>
                                 <td><a href="#" th:href="@{'/ingredients/' + ${ingredient.id}}">View</a></td>
                                 <td><a href="#" th:href="@{'/ingredients/' + ${ingredient.id} + '/edit'}">Update</a>
-                                </td>
-                                <td><a href="#" th:href="@{'/ingredients/' + ${ingredient.id} + '/delete'}">Delete</a>
+                                <td>
+                                    <form href="#" th:action="@{'/ingredients/' + ${ingredient.id} + '/delete/' + ${ingredient.recipeId}}" th:method="post">
+                                        <button class="btn btn-danger" type="submit">X</button>
+                                    </form>
                                 </td>
                             </tr>
                         </table>

@@ -10,4 +10,6 @@ public interface IngredientService {
 
     void saveNewIngredientToRecipe(Long id, IngredientCommand ingredientCommand);
 
+    void delete(Long id);
+
 }
