@@ -8,6 +8,8 @@ import com.beetle.recipe.repository.IngredientRepository;
 import com.beetle.recipe.repository.RecipeRepository;
 import org.springframework.stereotype.Service;
 
+import javax.transaction.Transactional;
+
 @Service
 public class IngredientServiceImpl implements IngredientService {
 
@@ -48,6 +50,15 @@ public class IngredientServiceImpl implements IngredientService {
 
         Ingredient ingredient = ingredientCommandToIngredient.convert(ingredientCommand);
         ingredientRepository.save(ingredient);
+    }
+
+    @Override
+    @Transactional
+    public void delete(Long id) {
+        Ingredient ingredient = ingredientRepository.findById(id)
+                .orElseThrow(() -> new IllegalArgumentException("Recipe with id" + id + "does not exist"));
+
+        ingredientRepository.delete(ingredient);
     }
 
 }
