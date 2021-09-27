@@ -7,6 +7,7 @@ import com.beetle.recipe.service.IngredientService;
 import com.beetle.recipe.service.RecipeService;
 import com.beetle.recipe.service.UnitOfMeasureService;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.tomcat.util.http.fileupload.IOUtils;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -14,7 +15,13 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.multipart.MultipartFile;
 
+import javax.servlet.http.HttpServletResponse;
+import java.io.ByteArrayInputStream;
+import java.io.IOException;
+import java.io.InputStream;
 import java.util.List;
 
 @Slf4j
@@ -88,6 +95,22 @@ public class RecipeController {
         return "ingredients/new";
     }
 
+    @GetMapping("/{id}/image")
+    public void renderImage(@PathVariable Long id, HttpServletResponse response) throws IOException {
+        RecipeCommand recipe = recipeService.getCommandById(id);
+
+        byte[] img = new byte[recipe.getImage().length];
+        int i = 0;
+
+        for (Byte part : recipe.getImage()) {
+            img[i++] = part;
+        }
+
+        response.setContentType("image/jpeg");
+        InputStream stream = new ByteArrayInputStream(img);
+        IOUtils.copy(stream, response.getOutputStream());
+    }
+
     @PostMapping
     public String save(@ModelAttribute RecipeCommand recipeCommand) {
         RecipeCommand saved = recipeService.save(recipeCommand);
@@ -108,6 +131,19 @@ public class RecipeController {
         recipeService.delete(id);
 
         return "redirect:/recipes/";
+    }
+
+    @PostMapping("/{id}/image")
+    public String updateImage(@PathVariable Long id, @RequestParam("pic") MultipartFile file) throws IOException {
+        if (file.getBytes().length == 0) {
+            log.warn("File is empty, no changes will be persisted");
+            return "redirect:/recipes/" + id;
+        }
+
+        log.info("Updating image for recipe '{}'", id);
+        recipeService.updateImage(id, file);
+
+        return "redirect:/recipes/" + id;
     }
 
 }

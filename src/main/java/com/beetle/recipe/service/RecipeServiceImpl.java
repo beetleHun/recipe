@@ -7,8 +7,10 @@ import com.beetle.recipe.model.entity.Recipe;
 import com.beetle.recipe.repository.RecipeRepository;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
 
 import javax.transaction.Transactional;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -62,6 +64,24 @@ public class RecipeServiceImpl implements RecipeService {
     @Transactional
     public void delete(Long id) {
         recipeRepository.deleteById(id);
+    }
+
+    @Override
+    public void updateImage(Long id, MultipartFile file) {
+        Recipe recipe = recipeRepository.findById(id).orElseThrow(() -> new IllegalArgumentException("Recipe with id " + id + "does not exist!"));
+        try {
+            Byte[] image = new Byte[file.getBytes().length];
+            int i = 0;
+
+            for (byte part : file.getBytes()) {
+                image[i++] = part;
+            }
+
+            recipe.setImage(image);
+            recipeRepository.save(recipe);
+        } catch (IOException e) {
+            log.error("An exception occurred during image processing! {}", e.getMessage());
+        }
     }
 
 }
