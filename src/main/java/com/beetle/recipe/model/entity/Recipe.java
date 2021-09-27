@@ -61,7 +61,7 @@ public class Recipe {
 
     @Lob
     @Column(name = "image")
-    private byte[] image;
+    private Byte[] image;
 
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "recipe")
     private Set<Ingredient> ingredients = new HashSet<>();
